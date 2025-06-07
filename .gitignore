@@ -195,3 +195,5 @@ cython_debug/
 
 # File to anonymize
 report_may2025.csv
+
+.DS_Store
