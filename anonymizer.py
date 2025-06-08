@@ -11,10 +11,13 @@ def cleaner(file: str) -> pd.DataFrame:
         df.iloc[:, 0] = df.iloc[:, 0].astype(str).str.strip().str.title()
     
         for col in df.columns[1:]:  # Skip the first column (e.g., 'supplier')
-            values = df[col]  # Get the column values
-            values = values.str.replace(",", ".")  # Replace commas with dots
-            values = values.astype(float, errors='ignore')  # Convert to float if possible
-            df[col] = values  # Store back into the DataFrame
+            df[col] = pd.to_numeric(
+                df[col]                     # Take the column
+                .astype(str)                # Convert each value to string
+                .str.replace(",", ".", regex=False)  # Step Replace commas with dots
+                .str.strip(),              # Remove leading/trailing spaces
+                errors="coerce"            # Try to convert to number; if it fails, insert NaN
+                )
 
         # Replace NaNs in numeric columns with 0
         df[df.columns[1:]] = df[df.columns[1:]].fillna(0)
