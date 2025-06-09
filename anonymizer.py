@@ -1,8 +1,9 @@
 
 from pathlib import Path
 import pandas as pd
+import re
 
-def reader(file: Path) -> pd.DataFrame:
+def read_report (file: Path) -> pd.DataFrame:
     """
     Reads a CSV file using UTF-8 encoding and ';' as separator.
     Drops any row where the first column (e.g., 'supplier') is NaN.
@@ -22,7 +23,7 @@ def reader(file: Path) -> pd.DataFrame:
         raise RuntimeError(f"Failed to read the file {file}: {e}")
 
 
-def cleaner(df: pd.DataFrame) -> pd.DataFrame:
+def clean_report (df: pd.DataFrame) -> pd.DataFrame:
     """
     Cleans the supplier report dataframe:
     - Standardizes supplier names
@@ -36,7 +37,7 @@ def cleaner(df: pd.DataFrame) -> pd.DataFrame:
         pd.DataFrame: Cleaned dataframe
     """
     # Clean the first column (supplier names)
-    df.iloc[:, 0] = df.iloc[:, 0].astype(str).str.strip().str.title()
+    df.iloc[:, 0] = df.iloc[:, 0].astype(str).str.strip().str.lower()
 
     # Clean numeric columns
     for col in df.columns[1:]:
@@ -54,8 +55,45 @@ def cleaner(df: pd.DataFrame) -> pd.DataFrame:
     print(df.head())  # Preview of cleaned data
     return df
 
+def normalize_name(name: str) -> str:
+    # Remove punctuation and spaces, keep only a–z, 0–9
+    name = re.sub(r"[^a-z0-9]", "", name)
+    return name
+
+def anonymize_suppliers(df : pd.DataFrame) -> pd.DataFrame:
+
+    supplier_col =  df.columns[0]
+    df["__supplier_key__"] = df[supplier_col].apply(normalize_name)
+
+    representative = (
+        df[[supplier_col, "__supplier_key__"]]
+        .drop_duplicates()
+        .groupby("__supplier_key__")
+        .first()[supplier_col]
+
+    )
+    # Map normalized key → anonymized name
+    mapping = {
+        key: f"Supplier_{str(i+1).zfill(3)}"
+        for i, key in enumerate(sorted(representative.index))
+    }
+
+    df.to_csv("raw_processed.csv", index=False)
+    # Replace original names with anonymized values
+    df[supplier_col] = df["__supplier_key__"].map(mapping)
+
+    # Drop helper column
+    df.drop(columns="__supplier_key__", inplace=True)
+
+    return df
+
+
 
 if __name__ == "__main__":
     path_to_file = Path("report_may2025.csv")
-    raw_df = reader(path_to_file)
-    cleaned_df = cleaner(raw_df)
+    raw_df = read_report(path_to_file)
+    cleaned_df = clean_report(raw_df)
+    anonymized_df = anonymize_suppliers(cleaned_df)
+
+    anonymized_df.to_csv("report_may2025_anonymized.csv", index=False)
+    print("Anonymized file saved.")
