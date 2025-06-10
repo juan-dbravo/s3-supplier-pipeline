@@ -10,6 +10,7 @@ if __name__ == "__main__":
     raw_df = read_csv(input_path)
     cleaned_df = clean_df(raw_df)
 
-    print(cleaned_df.head())
+
+ 
    
     cleaned_df.to_csv("example.csv", index=False, encoding="utf-8")
