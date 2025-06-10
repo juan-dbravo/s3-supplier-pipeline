@@ -15,9 +15,3 @@ def read_csv (file: Path) -> pd.DataFrame:
     except Exception as e:
         raise RuntimeError(f"Failed to read the file {file}: {e}")
     
-
-
-if __name__ == "__main__":
-
-    file_path = Path('InformeConsumos_Mayo.csv')
-    report = read_csv(file_path)
