@@ -1,11 +1,9 @@
 
 from pathlib import Path
 import pandas as pd
-import re
 
 
-
-def read_and_decode (file: Path) -> pd.DataFrame:
+def read_csv (file: Path) -> pd.DataFrame:
     """
     Reads the raw spanish original report and convert to utf-8
     """
@@ -21,9 +19,4 @@ def read_and_decode (file: Path) -> pd.DataFrame:
 if __name__ == "__main__":
 
     file_path = Path('InformeConsumos_Mayo.csv')
-    report = read_and_decode(file_path)
-
-
-
-# Drop rows where the first column (supplier) is NaN
-# # df = df.dropna(subset=[df.columns[0]])
+    report = read_csv(file_path)
