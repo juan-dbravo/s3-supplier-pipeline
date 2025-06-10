@@ -10,7 +10,6 @@ def read_csv (file: Path) -> pd.DataFrame:
 
     try:
         df = pd.read_csv(file, encoding="latin-1", sep=";")
-        print(df.head())
         return df
     except Exception as e:
         raise RuntimeError(f"Failed to read the file {file}: {e}")
