@@ -16,6 +16,7 @@ def read_csv (file: Path) -> pd.DataFrame:
         raise RuntimeError(f"Failed to read the file {file}: {e}")
     
 
+
 if __name__ == "__main__":
 
     file_path = Path('InformeConsumos_Mayo.csv')
