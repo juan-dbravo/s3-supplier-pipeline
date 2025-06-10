@@ -197,5 +197,6 @@ cython_debug/
 report_may2025.csv
 report_feb2025.csv
 InformeConsumos_Mayo.csv
+example.csv
 
 .DS_Store
