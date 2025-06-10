@@ -15,7 +15,7 @@ def read_report (file: Path) -> pd.DataFrame:
         pd.DataFrame: Raw dataframe.
     """
     try:
-        df = pd.read_csv(file, encoding="utf-8", sep=";")
+        df = pd.read_csv(file, encoding="latin-1", sep=";")
         # Drop rows where the first column (supplier) is NaN
         df = df.dropna(subset=[df.columns[0]])
         return df
@@ -36,6 +36,7 @@ def clean_report (df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Cleaned dataframe
     """
+
     # Clean the first column (supplier names)
     df.iloc[:, 0] = df.iloc[:, 0].astype(str).str.strip().str.lower()
 
@@ -52,7 +53,6 @@ def clean_report (df: pd.DataFrame) -> pd.DataFrame:
     # Replace NaNs in numeric columns with 0
     df[df.columns[1:]] = df[df.columns[1:]].fillna(0)
 
-    print(df.head())  # Preview of cleaned data
     return df
 
 def normalize_name(name: str) -> str:
@@ -60,7 +60,7 @@ def normalize_name(name: str) -> str:
     name = re.sub(r"[^a-z0-9]", "", name)
     return name
 
-def anonymize_suppliers(df : pd.DataFrame) -> pd.DataFrame:
+def anonymize_report(df : pd.DataFrame) -> pd.DataFrame:
 
     supplier_col =  df.columns[0]
     df["__supplier_key__"] = df[supplier_col].apply(normalize_name)
@@ -78,7 +78,6 @@ def anonymize_suppliers(df : pd.DataFrame) -> pd.DataFrame:
         for i, key in enumerate(sorted(representative.index))
     }
 
-    df.to_csv("raw_processed.csv", index=False)
     # Replace original names with anonymized values
     df[supplier_col] = df["__supplier_key__"].map(mapping)
 
@@ -90,10 +89,10 @@ def anonymize_suppliers(df : pd.DataFrame) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    path_to_file = Path("report_may2025.csv")
+    path_to_file = Path("report_feb2025.csv")
     raw_df = read_report(path_to_file)
-    cleaned_df = clean_report(raw_df)
-    anonymized_df = anonymize_suppliers(cleaned_df)
-
-    anonymized_df.to_csv("report_may2025_anonymized.csv", index=False)
-    print("Anonymized file saved.")
+    print(raw_df.head())
+    clean_df = clean_report(raw_df)
+    print(clean_df.head())
+    anonymized_df = anonymize_report(clean_df)
+    print(anonymized_df.head())
