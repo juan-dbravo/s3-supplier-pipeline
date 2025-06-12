@@ -1,6 +1,6 @@
-# s3-supplier-pipeline: A Cloud-Native ETL Pipeline for Supplier Spend Analysis in a Spanish SME Context
+# s3-supplier-pipeline: An S3-Backed ETL Pipeline for Supplier Spend Analysis in a Spanish SME Context
 
-A modular ETL pipeline for transforming monthly supplier purchase reports for a real Wholesale & Retail Company based in Spain. Outputs clean data for loading into PostgreSQL and performing supplier analysis, purchasing trend reports, and business planning.
+A production-style ETL pipeline that ingests real monthly supplier reports, cleans the data, and prepares it for SQL-based analysis and business planning.
 
 ---
 
@@ -9,8 +9,12 @@ A modular ETL pipeline for transforming monthly supplier purchase reports for a 
 - [Business Problem & Motivation](#business-problem--motivation)
 - [Data Structure & Raw Input](#data-structure--raw-input)
 - [Methodology & ETL Architecture](#methodology--etl-architecture)
-- [Setup & Execution](#setup--execution)
 - [Repository Structure](#repository-structure)
+- [Tools & Technologies](#tools--technologies)
+- [Setup & Execution](#setup--execution)
+- [Results & Sample Insights](#results--sample-insights)
+- [Conclusion & Future Improvements](#conclusion--future-improvements)
+- [Appendix & Resources](#appendix--resources)
 
 ---
 
@@ -80,14 +84,36 @@ More details about the ETL phases, data cleaning logic, and SQL schema will be p
 
 ---
 
+## Repository Structure
+
+A breakdown of folders and key scripts.
+
+---
+
+## Tools & Technologies
+
+This project uses:
+- Python 
+- Pandas
+- PostgreSQL 
+- AWS S3 (storage layer)
+- Docker (containerization)
+- GitHub Codespaces (for reproducibility)
+
 ## Setup & Execution
 
 Instructions coming soon: environment setup, how to run the pipeline, and sample commands.
 
 ---
 
-## Repository Structure
+## Results & Sample Insights
 
-A breakdown of folders and key scripts.
+---
+
+## Conclusion & Future Improvements
+
+---
+
+## Appendix & Resources
 
 ---
