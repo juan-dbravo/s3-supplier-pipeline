@@ -1,30 +1,42 @@
 # s3-supplier-pipeline
 
-Pipeline focused on cleaning monthly purchase reports, for a real Retail Company based in Spain, in order to load the data to postgre SQL for analysis.
+A modular ETL pipeline for cleaning monthly supplier purchase reports for a real Wholesale & Retail Company based in Spain. Outputs clean data for loading into PostgreSQL and performing supplier analysis, purchasing trend reports, and business planning.
 
 ---
 
-## What is this? 
-
-A pipeline that processes real monthly reports issued by a **Cooperative** who gathers multiple suppliers. 
-The purchaser is a real **Wholesale and Retail Company** based in Spain. 
-Each monthly report is provided in CSV format. After manual download, the pipeline parses and transforms these files into a clean, unified dataset. This dataset becomes the foundation for business intelligence tasks such as supplier analysis, purchasing trends, and budget planning.
-
-
-# Logic behind the reports (necessary to define the purpose of the pipeline)
-
-The monthly report is the comparison between the amount purchased in the same month of the current year vs the previous year trough two different channels: warehouse (items purchased by the Coopeative and stored in its warehouse) or direct (items purchased directly to the supplier.
-Pros and cons of each purchasing method:
-               
-warehouse     pros:  periodic delivery, possibilty of combinig in asame order items of various suppliers.
-              cons:  prices are a bit more expensive.
-              
-direct        pros:  Bonuses at the end of the year proportional to purchasing volume. In most cases lower prices.
-              cons:  Delivery can be slow, specially if ordering to factories. Need to puechase medium to big volumes.
+## Table of Contents
+- [Overview](#overview)
+- [Business Context](#business-context)
+- [Raw Report Structure](#raw-report-structure)
+- [ETL Architecture](#etl-architecture)
+- [Setup & Usage](#setup--usage)
+- [Project Structure](#project-structure)
 
 ---
 
-## Report Structure (Raw CSV Columns)
+## Overview
+
+This pipeline processes real monthly CSV reports issued by a Cooperative. Each report compares purchase totals from the same month across two years and two channels: warehouse and direct supplier.
+
+The result is a unified, clean CSV ready for analysis or loading into a PostgreSQL database.
+
+---
+
+## Business Context
+
+The purchaser is a mid-sized Retail & Wholesale company (Spain, ~€2M/year). Each month, they receive a report comparing purchases made via:
+
+- **Warehouse**: more expensive, but faster and combines suppliers.
+- **Direct**: cheaper, slower, and comes with annual bonuses.
+
+Clean data helps answer questions like:
+- Are we ordering more via direct or warehouse this year?
+- Which suppliers dropped in volume compared to last year?
+- Is our bonus-earning potential increasing?
+
+---
+
+## Raw Report Structure
 
 Each row represents a single supplier. The columns include purchase accumulations across two years and multiple channels:
 
@@ -36,7 +48,33 @@ Each row represents a single supplier. The columns include purchase accumulation
 | `Acum. Almacén 2023`     | Purchases from the warehouse in X month of previous year in €               |
 | `Acum. Directo 2023`     | Direct purchases in X month of previous year in €                           |
 
-#### [Example Image of a raw .csv report](URL-or-path-to-image)
+*Example:*  
+![Raw CSV Example](docs/images/raw_csv_sample.png)
+
 ---
 
+## ETL Architecture
+
+```
+[Raw CSV]
+   ↓
+[extract/download_csv.py]
+   ↓
+[transform/clean_df.py]
+   ↓
+[Cleaned CSV Output]
+   ↓
+[Upload to S3 and PostgreSQL]
+```
+
 More details about the ETL phases, data cleaning logic, and SQL schema will be provided in their respective subfolders.
+
+---
+
+## Setup & Usage
+
+---
+
+## Project Structure
+
+---
