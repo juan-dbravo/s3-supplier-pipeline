@@ -1,28 +1,32 @@
-# s3-supplier-pipeline
+# s3-supplier-pipeline: A Cloud-Native ETL Pipeline for Supplier Spend Analysis in a Spanish SME Context
 
-A modular ETL pipeline for cleaning monthly supplier purchase reports for a real Wholesale & Retail Company based in Spain. Outputs clean data for loading into PostgreSQL and performing supplier analysis, purchasing trend reports, and business planning.
+A modular ETL pipeline for transforming monthly supplier purchase reports for a real Wholesale & Retail Company based in Spain. Outputs clean data for loading into PostgreSQL and performing supplier analysis, purchasing trend reports, and business planning.
 
 ---
 
 ## Table of Contents
-- [Overview](#overview)
-- [Business Context](#business-context)
-- [Raw Report Structure](#raw-report-structure)
-- [ETL Architecture](#etl-architecture)
-- [Setup & Usage](#setup--usage)
-- [Project Structure](#project-structure)
+- [Executive Summary](#executive-summary)
+- [Business Problem & Motivation](#business-problem--motivation)
+- [Data Structure & Raw Input](#data-structure--raw-input)
+- [Methodology & ETL Architecture](#methodology--etl-architecture)
+- [Setup & Execution](#setup--execution)
+- [Repository Structure](#repository-structure)
 
 ---
 
-## Overview
+## Executive Summary
 
 This pipeline processes real monthly CSV reports issued by a Cooperative. Each report compares purchase totals from the same month across two years and two channels: warehouse and direct supplier.
 
 The result is a unified, clean CSV ready for analysis or loading into a PostgreSQL database.
 
+#### Disclaimer:
+
+This project is for educational and pportfolio purposes only . All data has been anonymized or synthesized based on real-world report structures. No confidential or proprietary business information is included.
+
 ---
 
-## Business Context
+## Business Problem & Motivation
 
 The purchaser is a mid-sized Retail & Wholesale company (Spain, ~€2M/year). Each month, they receive a report comparing purchases made via:
 
@@ -36,24 +40,29 @@ Clean data helps answer questions like:
 
 ---
 
-## Raw Report Structure
+## Data Structure & Raw Input
 
 Each row represents a single supplier. The columns include purchase accumulations across two years and multiple channels:
 
-| Column Name              | Description                                                                 |
-|--------------------------|-----------------------------------------------------------------------------|
-| `PROVEEDOR`              | Supplier name.                                                              |
-| `Acum. Almacén 2024`     | Purchases from the warehouse in X month of current year in €                |
-| `Acum. Directo 2024`     | Direct purchases in X month of current year in €                            |
-| `Acum. Almacén 2023`     | Purchases from the warehouse in X month of previous year in €               |
-| `Acum. Directo 2023`     | Direct purchases in X month of previous year in €                           |
+| Column Name              | Description                                                                     |
+|--------------------------|---------------------------------------------------------------------------------|
+| `PROVEEDOR`              | Supplier name (up to 280 different suppliers)                                   |
+| `Acum. Almacén 2025`     | Purchases from the warehouse in a given month (e.g., May) of current year in €  |
+| `Acum. Directo 2025`     | Direct purchases in the same month of current year in €                         |
+| `Acum. Encargos 2025`    | Additional purchase chanel (Column to be deleted in cleaning stage)             |
+| `Acum. Almacén 2024`     | Purchases from the warehouse in a given month (e.g., May) of previous year in € |
+| `Acum. Directo 2024`     | Direct purchases in the same month of previous year in €                        |
+| `Acum. Encargos 2024`    | Additional purchase chanel (Column to be deleted)                               |
 
-*Example:*  
-![Raw CSV Example](docs/images/raw_csv_sample.png)
+*Example:*
+
+[Raw CSV May Report](images/raw_report.png)
+
+Note: Supplier names have been left visible for illustrative purposes only. No sensitive information is shown. This excerpt contains fewer than 5% of the original data and is used for educational context.
 
 ---
 
-## ETL Architecture
+## Methodology & ETL Architecture
 
 ```
 [Raw CSV]
@@ -71,10 +80,14 @@ More details about the ETL phases, data cleaning logic, and SQL schema will be p
 
 ---
 
-## Setup & Usage
+## Setup & Execution
+
+Instructions coming soon: environment setup, how to run the pipeline, and sample commands.
 
 ---
 
-## Project Structure
+## Repository Structure
+
+A breakdown of folders and key scripts.
 
 ---
